@@ -24,12 +24,12 @@ export function TariffTable() {
           <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl shadow-brand-950/5">
             <div className="hidden grid-cols-[1fr_15rem_9.5rem] gap-4 bg-brand-700 px-8 py-4 text-sm font-bold text-white md:grid">
               <span>خدمت</span>
-              <span>تعرفه</span>
-              <span>تعرفه آزاد</span>
+              <span>تعرفه معاونت درمان</span>
+              {/*   <span>تعرفه آزاد</span> */}
             </div>
 
             <ul className="divide-y divide-slate-100">
-              {ALL_SERVICES.map(({ id, icon: Icon, title, tariffNote, price, unit, freePrice }) => (
+              {ALL_SERVICES.map(({ id, icon: Icon, title, tariffNote, price, unit }) => (
                 <li
                   key={id}
                   className="grid items-center gap-4 px-5 py-5 transition-colors hover:bg-brand-50/50 sm:px-8 md:grid-cols-[1fr_15rem_9.5rem]"
@@ -39,14 +39,14 @@ export function TariffTable() {
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <h4 className="font-extrabold text-brand-950">{title}</h4>
+                      <h4 className="text-xs lg:text-base font-extrabold text-brand-950">{title}</h4>
                       <p className="text-sm leading-7 text-slate-600">{tariffNote}</p>
                     </div>
                   </div>
 
                   {price !== null ? (
                     <p className="flex flex-col">
-                      <span className="text-xl font-extrabold text-brand-700">{formatToman(price)}</span>
+                      <span className="xl:text-xl font-extrabold text-brand-700">{formatToman(price)}</span>
                       <span className="text-xs text-slate-600">{unit}</span>
                     </p>
                   ) : (
@@ -56,7 +56,7 @@ export function TariffTable() {
                     </p>
                   )}
 
-                  {freePrice ? (
+                  {/*  {freePrice ? (
                     <p className="flex flex-col">
                       <span className="text-xl font-extrabold text-brand-700">{formatToman(freePrice)}</span>
                       <span className="text-xs text-slate-600">{unit}</span>
@@ -66,7 +66,7 @@ export function TariffTable() {
                       <span className="text-sm font-extrabold text-accent-800">[ مبلغ تعرفه ]</span>
                       <span className="text-xs text-accent-800">{unit} · قابل ویرایش</span>
                     </p>
-                  )}
+                  )} */}
 
                 </li>
               ))}

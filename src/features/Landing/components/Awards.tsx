@@ -127,16 +127,21 @@ export function Awards() {
             <p className="font-bold">هنوز لوح تقدیری ثبت نشده است.</p>
           </div>
         ) : (
-          <ul className="no-scrollbar mt-14 -mx-4 flex justify-center snap-x snap-mandatory gap-5 overflow-x-auto px-4 pt-3 pb-6 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4 lg:gap-7">
-            <li></li>
+          <ul className="no-scrollbar mt-14 -mx-4 flex justify-start snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain px-4 pt-3 pb-6 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4 lg:gap-7">
             {AWARDS.map((award, i) => (
-              <li key={award.id} className="w-[72%] shrink-0 snap-center sm:w-auto">
+              <li
+                key={award.id}
+                className="w-[72%] shrink-0 snap-center sm:w-auto"
+              >
                 <Reveal delay={(i % 4) * 90}>
-                  <AwardCard award={award} position={i + 1} onOpen={() => setActiveAward(i)} />
+                  <AwardCard
+                    award={award}
+                    position={i + 1}
+                    onOpen={() => setActiveAward(i)}
+                  />
                 </Reveal>
               </li>
             ))}
-            <li></li>
           </ul>
         )}
 

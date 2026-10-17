@@ -28,7 +28,7 @@ export function ServiceCard({ service, position, onRequest }: ServiceCardProps) 
         <Icon className="size-7" aria-hidden="true" />
       </span>
 
-      <h3 className="relative mt-6 text-xl font-extrabold text-brand-950">{title}</h3>
+      <h3 className="relative mt-6 xl:text-xl font-extrabold text-brand-950">{title}</h3>
       <p className="relative mt-3 flex-1 text-[15px] leading-8 text-slate-600">{description}</p>
 
       <button

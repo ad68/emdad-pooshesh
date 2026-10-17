@@ -368,6 +368,8 @@ export interface AwardItem {
 export const AWARDS: AwardItem[] = [
   { id: "award-1", image: "/images/awards/award-1.jpg", issuer: "مرکز اورژانس استان تهران", date: "1405/02/01" },
   { id: "award-2", image: "/images/awards/award-2.jpg", issuer: "مرکز اورژانس استان تهران", date: "1403/12/13" },
+  { id: "award-3", image: "/images/awards/award-3.jpg", issuer: "مرکز اورژانس استان تهران", date: "1404/04/16" },
+  { id: "award-4", image: "/images/awards/award-4.jpg", issuer: "مرکز اورژانس استان تهران", date: "1404/04/11" },
   /*   { id: "award-3" },
     { id: "award-4" }, */
 ];
