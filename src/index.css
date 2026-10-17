@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Brand tokens                                                       */
+/*  brand  = primary teal   #017785                                    */
+/*  accent = secondary orange #F86534                                  */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans: var(--font-iransans), Tahoma, "Segoe UI", system-ui, sans-serif;
+
+  --color-brand-50: #effafb;
+  --color-brand-100: #d6f2f4;
+  --color-brand-200: #b0e4e8;
+  --color-brand-300: #7acfd6;
+  --color-brand-400: #3fb2bd;
+  --color-brand-500: #1a95a3;
+  --color-brand-600: #017785;
+  --color-brand-700: #025f6b;
+  --color-brand-800: #064d57;
+  --color-brand-900: #083f48;
+  --color-brand-950: #04282f;
+
+  --color-accent-50: #fff4ef;
+  --color-accent-100: #ffe5d9;
+  --color-accent-200: #ffc8b0;
+  --color-accent-300: #ffa27e;
+  --color-accent-400: #fc7c52;
+  --color-accent-500: #f86534;
+  --color-accent-600: #e44d1a;
+  --color-accent-700: #bd3b13;
+  --color-accent-800: #973317;
+  --color-accent-900: #7a2d16;
+
+  --color-paper: #f6f9fa;
+
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-pop: pop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-ring: ring 2.4s ease-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.97) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+}
+
+/* Plain keyframes (used by .skeleton) — kept outside @theme so they are never tree-shaken */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@layer base {
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+    color: #334155;
+    font-family: var(--font-sans);
+    line-height: 1.85;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: #f86534;
+    color: #04282f;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Gentle slide-up used by <Reveal>. Transform only, so content is never hidden. */
+  .reveal {
+    transform: translateY(24px);
+    transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible {
+    transform: none;
+  }
+
+  /* Skeleton shimmer for image loading states */
+  .skeleton {
+    background: linear-gradient(110deg, #e6eef0 30%, #f6f9fa 50%, #e6eef0 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  /* Subtle blueprint grid (map placeholder, dark sections) */
+  .bg-grid-teal {
+    background-image:
+      linear-gradient(to right, rgb(1 119 133 / 0.09) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(1 119 133 / 0.09) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Hide scrollbar on horizontal snap carousels */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
