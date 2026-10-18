@@ -44,7 +44,7 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-xs text-white/85">پیوند شبکه‌های اجتماعی پس از ثبت، فعال می‌شود.</p>
+
         </div>
 
         {/* Quick links */}
