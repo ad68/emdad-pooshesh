@@ -1,4 +1,4 @@
-import { Camera, MessageCircle, Send, Video, type LucideIcon } from "lucide-react";
+import { Camera, type LucideIcon } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Central, easy-to-edit company configuration.                       */
