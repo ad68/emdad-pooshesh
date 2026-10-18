@@ -61,7 +61,7 @@ export const CONTACT = {
   },
 
   email: {
-    value: "info@your-domain.ir",
+    value: "emdadpooshesh@gmail.com",
     placeholder: true,
   },
 
@@ -83,8 +83,10 @@ export interface SocialLink {
 }
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { id: "instagram", label: "اینستاگرام", icon: Camera, href: "" },
-  { id: "telegram", label: "تلگرام", icon: Send, href: "" },
-  { id: "whatsapp", label: "واتس‌اپ", icon: MessageCircle, href: "" },
-  { id: "aparat", label: "آپارات", icon: Video, href: "" },
+  {
+    id: "instagram", label: "اینستاگرام", icon: Camera, href: "Emdadpooshesh@gmail.com"
+  },
+  /*   { id: "telegram", label: "تلگرام", icon: Send, href: "" },
+    { id: "whatsapp", label: "واتس‌اپ", icon: MessageCircle, href: "" },
+    { id: "aparat", label: "آپارات", icon: Video, href: "" }, */
 ];
