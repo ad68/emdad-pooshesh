@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { ArrowLeft, ChevronLeft, ChevronRight, Clock, Pause, PhoneCall, Play } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Clock, Pause, PhoneCall, Play, AppWindow } from "lucide-react";
 import { HERO_SLIDES } from "@/data/content";
 import { CONTACT } from "@/data/site";
 import { telHref, toFaDigits } from "@/lib/format";
@@ -146,10 +146,10 @@ export function Hero() {
               href={emergencyHref}
               variant="primary"
               size="lg"
-              leadingIcon={PhoneCall}
+              leadingIcon={AppWindow}
               className="w-full sm:w-auto"
             >
-              تماس با مرکز
+              درخواست آنلاین خدمت
             </ButtonLink>
             <ButtonLink
               href="#services"

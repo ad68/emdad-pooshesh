@@ -44,14 +44,14 @@ export const CONTACT = {
   /** Main emergency line — used by every "call" button on the site. */
   emergency: {
     label: "خط اورژانس و اعزام",
-    display: "021-88541848",
-    tel: "021-88541848",
+    display: "09965550358 ",
+    tel: "09965550358 ",
   } satisfies PhoneEntry,
 
   phones: [
-    { label: "خط اورژانس و اعزام", display: "021-88541848", tel: "021-88541848" },
+    { label: "خط اورژانس و اعزام", display: "09965550358", tel: "09965550358 " },
     { label: "اورژانس", display: "021-88541848", tel: "021-88541848" },
-    { label: "پشتیبانی (همراه)", display: "0996-5550358", tel: "0996-5550358" },
+    /* { label: "پشتیبانی (همراه)", display: "0996-5550358", tel: "0996-5550358" }, */
 
   ] satisfies PhoneEntry[],
 

@@ -20,8 +20,6 @@ const EMPTY_VALUES: FormValues = { name: "", phone: "", subject: "", message: ""
 
 const SUBJECT_OPTIONS = [
   ...SERVICES.map((service) => service.title),
-  "استعلام تعرفه و قیمت",
-  "سایر موارد",
 ];
 
 const PHONE_PATTERN = /^(?:(?:\+98|0098|0)?9\d{9}|0[1-8]\d{9})$/;
@@ -179,7 +177,7 @@ export function ContactForm({ prefill }: ContactFormProps) {
       aria-label="فرم تماس با مرکز"
       className="rounded-3xl bg-white p-6 shadow-xl shadow-brand-950/5 ring-1 ring-slate-200 sm:p-8"
     >
-      <h3 className="text-2xl font-extrabold text-brand-950">ارسال پیام</h3>
+      <h3 className="text-2xl font-extrabold text-brand-950">درخواست خدمت</h3>
       <p className="mt-1 text-slate-600">فرم زیر را تکمیل کنید تا همکاران ما با شما در ارتباط باشند.</p>
 
       <p className="mt-5 flex items-start gap-3 rounded-2xl bg-accent-50 p-4 text-sm leading-7 text-accent-900">
@@ -194,7 +192,7 @@ export function ContactForm({ prefill }: ContactFormProps) {
       </p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field id="contact-name" label="نام و نام خانوادگی" error={errors.name}>
+        <Field id="contact-name" label="نام و نام خانوادگی بیمار" error={errors.name}>
           <input
             id="contact-name"
             type="text"
@@ -209,7 +207,7 @@ export function ContactForm({ prefill }: ContactFormProps) {
           />
         </Field>
 
-        <Field id="contact-phone" label="شمارهٔ تماس" error={errors.phone}>
+        <Field id="contact-phone" label="شمارهٔ تماس بیمار" error={errors.phone}>
           <input
             id="contact-phone"
             type="tel"
@@ -223,6 +221,22 @@ export function ContactForm({ prefill }: ContactFormProps) {
             aria-describedby={describedBy("phone")}
             placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷"
             className={cn(inputStyles(Boolean(errors.phone)), "h-12 text-right")}
+          />
+        </Field>
+        <Field id="contact-phone" label="شمارهٔ تماس همراه بیمار" error={errors.phone}>
+          <input
+            id="contact-phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            dir="ltr"
+            value={values.phone}
+            onChange={handleChange("phone")}
+            onBlur={handleBlur("phone")}
+            aria-invalid={Boolean(errors.phone)}
+            aria-describedby={describedBy("phone")}
+            placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷"
+            className={cn(inputStyles(Boolean(errors.phone)), "h-12 text-right ")}
           />
         </Field>
       </div>
@@ -257,7 +271,7 @@ export function ContactForm({ prefill }: ContactFormProps) {
       </div>
 
       <div className="mt-5">
-        <Field id="contact-message" label="متن پیام" error={errors.message}>
+        <Field id="contact-message" label="شرح حال مختصر بیمار" error={errors.message}>
           <textarea
             id="contact-message"
             rows={5}
@@ -266,7 +280,7 @@ export function ContactForm({ prefill }: ContactFormProps) {
             onBlur={handleBlur("message")}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={describedBy("message")}
-            placeholder="توضیح مختصری دربارهٔ درخواست خود بنویسید (مبدأ، مقصد، شرایط بیمار و ...)"
+            placeholder="توضیح مختصری دربارهٔ شرح حال بیمار خود بنویسید"
             className={cn(inputStyles(Boolean(errors.message)), "resize-y py-3 leading-8")}
           />
         </Field>
