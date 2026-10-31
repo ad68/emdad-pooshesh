@@ -1,14 +1,14 @@
-import { ArrowLeft } from "lucide-react";
+
 import type { Service } from "@/data/content";
 import { toFaDigits } from "@/lib/format";
 
 interface ServiceCardProps {
   service: Service;
   position: number;
-  onRequest: (serviceTitle: string) => void;
+
 }
 
-export function ServiceCard({ service, position, onRequest }: ServiceCardProps) {
+export function ServiceCard({ service, position }: ServiceCardProps) {
   const { icon: Icon, title, description } = service;
 
   return (
@@ -31,14 +31,7 @@ export function ServiceCard({ service, position, onRequest }: ServiceCardProps) 
       <h3 className="relative mt-6 xl:text-xl font-extrabold text-brand-950">{title}</h3>
       <p className="relative mt-3 flex-1 text-[15px] leading-8 text-slate-600">{description}</p>
 
-      <button
-        type="button"
-        onClick={() => onRequest(title)}
-        className="relative mt-6 inline-flex items-center gap-2 self-start rounded-full py-1 font-bold text-brand-700 transition-colors hover:text-accent-700"
-      >
-        درخواست این خدمت
-        <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
-      </button>
+
     </article>
   );
 }

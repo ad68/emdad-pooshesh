@@ -196,8 +196,8 @@ export const ALL_SERVICES: Service[] = [
     description: "",
     tariffNote: "آمبولانس تیپ A",
     icon: Route,
-    price: 270000,
-    freePrice: 370000,
+    price: 27000,
+    freePrice: 37000,
     unit: "هر کیلومتر",
   },
   {

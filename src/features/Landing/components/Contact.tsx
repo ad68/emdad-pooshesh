@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Clock, Mail, MapPin, PhoneCall, type LucideIcon } from "lucide-react";
 import { CONTACT } from "@/data/site";
 import { isDialable, telHref } from "@/lib/format";
-import { ContactForm, type ContactPrefill } from "./ContactForm";
+import { ContactForm } from "./ContactForm";
 import { MapPlaceholder } from "./MapPlaceholder";
 import { ButtonLink } from "@/components/website/ui/Button";
 import { Container } from "@/components/website/ui/Container";
@@ -28,11 +28,9 @@ function InfoCard({ icon: Icon, title, badge, children }: { icon: LucideIcon; ti
   );
 }
 
-interface ContactProps {
-  prefill: ContactPrefill | null;
-}
 
-export function Contact({ prefill }: ContactProps) {
+
+export function Contact() {
   const otherPhones = CONTACT.phones.slice(1);
 
   return (
@@ -116,7 +114,7 @@ export function Contact({ prefill }: ContactProps) {
 
           {/* ------------------------------ Form ------------------------------ */}
           <Reveal delay={120} className="lg:col-span-7">
-            <ContactForm prefill={prefill} />
+            <ContactForm />
           </Reveal>
         </div>
 

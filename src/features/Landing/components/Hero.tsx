@@ -143,7 +143,8 @@ export function Hero() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink
-              href={emergencyHref}
+              href="#contact"
+
               variant="primary"
               size="lg"
               leadingIcon={AppWindow}

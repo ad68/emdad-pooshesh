@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useState } from "react";
+
 import { SECTION_IDS } from "@/data/site";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { About } from "./components/About";
 import { Awards } from "./components/Awards";
 import { Contact } from "./components/Contact";
-import type { ContactPrefill } from "./components/ContactForm";
+
 import { FloatingEmergencyButton } from "./components/FloatingEmergencyButton";
 import { Footer } from "@/components/website/layout/Footer";
 import { Header } from "@/components/website/layout/Header";
@@ -19,13 +19,10 @@ import { VideoGallery } from "./components/VideoGallery";
 
 export default function Landing() {
   const activeSectionId = useScrollSpy(SECTION_IDS);
-  const [prefill, setPrefill] = useState<ContactPrefill | null>(null);
+
 
   /** "Request this service" buttons pre-fill the contact form and scroll to it. */
-  const requestService = useCallback((serviceTitle: string) => {
-    setPrefill((current) => ({ subject: serviceTitle, nonce: (current?.nonce ?? 0) + 1 }));
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -43,11 +40,11 @@ export default function Landing() {
         <Hero />
         <TrustStrip />
         <About />
-        <Services onRequestService={requestService} />
+        <Services />
         <PhotoGallery />
         <VideoGallery />
         <Awards />
-        <Contact prefill={prefill} />
+        <Contact />
       </main>
 
       <Footer />

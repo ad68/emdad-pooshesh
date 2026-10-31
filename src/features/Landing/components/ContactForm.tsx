@@ -1,22 +1,18 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
-import { ChevronDown, CircleAlert, CircleCheck, LoaderCircle, PhoneCall, Send } from "lucide-react";
+import { type ReactNode } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronDown, CircleAlert, PhoneCall } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { SERVICES } from "@/data/content";
 import { CONTACT } from "@/data/site";
 import { telHref, toEnDigits } from "@/lib/format";
-import { submitContactForm, type ContactResult } from "@/services/contactService";
+
 import { cn } from "@/utils/cn";
-import { Button, ButtonLink } from "@/components/website/ui/Button";
-type FieldName = "name" | "phone" | "subject" | "message";
-type FormValues = Record<FieldName, string>;
-type FormErrors = Partial<Record<FieldName, string>>;
+import { Button } from "@/components/website/ui/Button";
 
-export interface ContactPrefill {
-  subject: string;
-  /** Changes on every request so the same subject can be applied twice. */
-  nonce: number;
-}
 
-const EMPTY_VALUES: FormValues = { name: "", phone: "", subject: "", message: "" };
+
+const EMPTY_VALUES: FormValues = { name: "", phone: "", subject: "", message: "", attendantPhone: "" };
 
 const SUBJECT_OPTIONS = [
   ...SERVICES.map((service) => service.title),
@@ -24,26 +20,45 @@ const SUBJECT_OPTIONS = [
 
 const PHONE_PATTERN = /^(?:(?:\+98|0098|0)?9\d{9}|0[1-8]\d{9})$/;
 
-function validate(values: FormValues): FormErrors {
-  const errors: FormErrors = {};
+const contactFormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "لطفاً نام و نام خانوادگی بیمار خود را وارد کنید.")
+    .min(3, "نام واردشده بسیار کوتاه است."),
+  phone: z
+    .string()
+    .transform((value) => toEnDigits(value).replace(/[\s\-()]/g, ""))
+    .pipe(
+      z
+        .string()
+        .min(1, "لطفاً شمارهٔ تماس بیمار خود را وارد کنید.")
+        .refine((value) => !value || PHONE_PATTERN.test(value), {
+          message: "شمارهٔ تماس معتبر نیست. مثال: ۰۹۱۲۳۴۵۶۷۸۹ یا ۰۲۱۱۲۳۴۵۶۷۸",
+        })
+    ),
+  attendantPhone: z
+    .string()
+    .transform((value) => toEnDigits(value).replace(/[\s\-()]/g, ""))
+    .pipe(
+      z
+        .string()
+        .min(1, "لطفاً شمارهٔ تماس همراه بیمار خود را وارد کنید.")
+        .refine((value) => !value || PHONE_PATTERN.test(value), {
+          message: "شمارهٔ تماس معتبر نیست. مثال: ۰۹۱۲۳۴۵۶۷۸۹ یا ۰۲۱۱۲۳۴۵۶۷۸",
+        })
+    ),
 
-  const name = values.name.trim();
-  if (!name) errors.name = "لطفاً نام و نام خانوادگی خود را وارد کنید.";
-  else if (name.length < 3) errors.name = "نام واردشده بسیار کوتاه است.";
+  subject: z.string().min(1, "لطفاً موضوع درخواست را انتخاب کنید."),
+  message: z
+    .string()
+    .trim()
+    .min(1, "لطفاً متن پیام خود را بنویسید.")
+    .min(10, "متن پیام باید دست‌کم ۱۰ نویسه باشد."),
+});
 
-  const phone = toEnDigits(values.phone).replace(/[\s\-()]/g, "");
-  if (!phone) errors.phone = "لطفاً شمارهٔ تماس خود را وارد کنید.";
-  else if (!PHONE_PATTERN.test(phone))
-    errors.phone = "شمارهٔ تماس معتبر نیست. مثال: ۰۹۱۲۳۴۵۶۷۸۹ یا ۰۲۱۱۲۳۴۵۶۷۸";
+type FormValues = z.input<typeof contactFormSchema>;
 
-  if (!values.subject) errors.subject = "لطفاً موضوع پیام را انتخاب کنید.";
-
-  const message = values.message.trim();
-  if (!message) errors.message = "لطفاً متن پیام خود را بنویسید.";
-  else if (message.length < 10) errors.message = "متن پیام باید دست‌کم ۱۰ نویسه باشد.";
-
-  return errors;
-}
 
 interface FieldProps {
   id: string;
@@ -76,103 +91,36 @@ const inputStyles = (hasError: boolean) =>
     hasError ? "border-red-500 bg-red-50/40" : "border-slate-300 hover:border-slate-400"
   );
 
-interface ContactFormProps {
-  prefill: ContactPrefill | null;
-}
 
-export function ContactForm({ prefill }: ContactFormProps) {
-  const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<"idle" | "submitting" | "done" | "failed">("idle");
-  const [result, setResult] = useState<ContactResult | null>(null);
 
-  // A visitor clicked "request this service": pre-select the subject.
-  useEffect(() => {
-    if (!prefill) return;
-    const subject = SUBJECT_OPTIONS.includes(prefill.subject) ? prefill.subject : "سایر موارد";
-    setValues((current) => ({ ...current, subject }));
-    setErrors((current) => ({ ...current, subject: undefined }));
-    setStatus((current) => (current === "done" ? "idle" : current));
-  }, [prefill]);
+export function ContactForm() {
 
-  const handleChange = (field: FieldName) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const value = event.target.value;
-    setValues((current) => ({ ...current, [field]: value }));
-    // Clear the error as soon as the visitor starts fixing the field.
-    if (errors[field]) setErrors((current) => ({ ...current, [field]: undefined }));
+  const {
+    register,
+    handleSubmit,
+
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: EMPTY_VALUES,
+  });
+  const selectedSubject = watch("subject");
+
+
+  const onSubmit = async (values: FormValues) => {
+
+    console.log('values', values)
   };
 
-  const handleBlur = (field: FieldName) => () => {
-    if (!values[field]) return;
-    setErrors((current) => ({ ...current, [field]: validate(values)[field] }));
-  };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const found = validate(values);
-    setErrors(found);
 
-    const firstInvalid = (Object.keys(found) as FieldName[])[0];
-    if (firstInvalid) {
-      document.getElementById(`contact-${firstInvalid}`)?.focus();
-      return;
-    }
 
-    setStatus("submitting");
-    try {
-      const outcome = await submitContactForm({
-        name: values.name.trim(),
-        phone: toEnDigits(values.phone).replace(/[\s\-()]/g, ""),
-        subject: values.subject,
-        message: values.message.trim(),
-      });
-      setResult(outcome);
-      setStatus("done");
-    } catch {
-      setStatus("failed");
-    }
-  };
-
-  const resetForm = () => {
-    setValues(EMPTY_VALUES);
-    setErrors({});
-    setResult(null);
-    setStatus("idle");
-  };
-
-  if (status === "done" && result) {
-    return (
-      <div role="status" className="flex h-full flex-col items-center justify-center gap-4 rounded-3xl bg-brand-50 p-8 text-center sm:p-12">
-        <span className="grid size-20 place-items-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30">
-          <CircleCheck className="size-10" aria-hidden="true" />
-        </span>
-        <h3 className="text-2xl font-extrabold text-brand-950">
-          {result.delivered ? "پیام شما ارسال شد" : "اطلاعات فرم شما تکمیل و بررسی شد"}
-        </h3>
-        <p className="max-w-md leading-8 text-slate-700">
-          {result.delivered
-            ? "همکاران ما در اولین فرصت با شما تماس خواهند گرفت."
-            : "توجه: این فرم هنوز به سرویس دریافت پیام متصل نشده است و اطلاعات شما به جایی ارسال نشد. برای پیگیری فوری لطفاً با مرکز تماس بگیرید."}
-        </p>
-        <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-          {!result.delivered && (
-            <ButtonLink href={telHref(CONTACT.emergency.tel)} variant="primary" leadingIcon={PhoneCall}>
-              تماس با مرکز
-            </ButtonLink>
-          )}
-          <Button variant="outline" onClick={resetForm}>
-            ثبت پیام جدید
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  const describedBy = (field: FieldName) => (errors[field] ? `contact-${field}-error` : undefined);
+  const describedBy = (field: keyof FormValues) => (errors[field] ? `contact-${field}-error` : undefined);
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       noValidate
       aria-label="فرم تماس با مرکز"
       className="rounded-3xl bg-white p-6 shadow-xl shadow-brand-950/5 ring-1 ring-slate-200 sm:p-8"
@@ -192,14 +140,12 @@ export function ContactForm({ prefill }: ContactFormProps) {
       </p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field id="contact-name" label="نام و نام خانوادگی بیمار" error={errors.name}>
+        <Field id="contact-name" label="نام و نام خانوادگی بیمار" error={errors.name?.message}>
           <input
             id="contact-name"
             type="text"
             autoComplete="name"
-            value={values.name}
-            onChange={handleChange("name")}
-            onBlur={handleBlur("name")}
+            {...register("name")}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={describedBy("name")}
             placeholder="مثلاً: علی رضایی"
@@ -207,51 +153,46 @@ export function ContactForm({ prefill }: ContactFormProps) {
           />
         </Field>
 
-        <Field id="contact-phone" label="شمارهٔ تماس بیمار" error={errors.phone}>
+        <Field id="contact-phone" label="شمارهٔ تماس بیمار" error={errors.phone?.message}>
           <input
             id="contact-phone"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
             dir="ltr"
-            value={values.phone}
-            onChange={handleChange("phone")}
-            onBlur={handleBlur("phone")}
+            {...register("phone")}
             aria-invalid={Boolean(errors.phone)}
             aria-describedby={describedBy("phone")}
             placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷"
             className={cn(inputStyles(Boolean(errors.phone)), "h-12 text-right")}
           />
         </Field>
-        <Field id="contact-phone" label="شمارهٔ تماس همراه بیمار" error={errors.phone}>
+      </div>
+      <div className="mt-6 grid gap-5 grid-cols-1">
+        <Field id="attendant-phone" label="شمارهٔ تماس همراه بیمار" error={errors.attendantPhone?.message}>
           <input
-            id="contact-phone"
+            id="attendant-phone"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
             dir="ltr"
-            value={values.phone}
-            onChange={handleChange("phone")}
-            onBlur={handleBlur("phone")}
-            aria-invalid={Boolean(errors.phone)}
-            aria-describedby={describedBy("phone")}
+            {...register("attendantPhone")}
+            aria-invalid={Boolean(errors.attendantPhone)}
+            aria-describedby={describedBy("attendantPhone")}
             placeholder="۰۹۱۲ ۱۲۳ ۴۵۶۷"
-            className={cn(inputStyles(Boolean(errors.phone)), "h-12 text-right ")}
+            className={cn(inputStyles(Boolean(errors.attendantPhone)), "h-12 text-right")}
           />
         </Field>
       </div>
-
       <div className="mt-5">
-        <Field id="contact-subject" label="موضوع پیام" error={errors.subject}>
+        <Field id="contact-subject" label="موضوع درخواست" error={errors.subject?.message}>
           <div className="relative">
             <select
               id="contact-subject"
-              value={values.subject}
-              onChange={handleChange("subject")}
-              onBlur={handleBlur("subject")}
+              {...register("subject")}
               aria-invalid={Boolean(errors.subject)}
               aria-describedby={describedBy("subject")}
-              className={cn(inputStyles(Boolean(errors.subject)), "h-12 appearance-none pe-12", !values.subject && "text-slate-400")}
+              className={cn(inputStyles(Boolean(errors.subject)), "h-12 appearance-none pe-12", !selectedSubject && "text-slate-400")}
             >
               <option value="" disabled>
                 موضوع را انتخاب کنید
@@ -271,13 +212,11 @@ export function ContactForm({ prefill }: ContactFormProps) {
       </div>
 
       <div className="mt-5">
-        <Field id="contact-message" label="شرح حال مختصر بیمار" error={errors.message}>
+        <Field id="contact-message" label="شرح حال مختصر بیمار" error={errors.message?.message}>
           <textarea
             id="contact-message"
             rows={5}
-            value={values.message}
-            onChange={handleChange("message")}
-            onBlur={handleBlur("message")}
+            {...register("message")}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={describedBy("message")}
             placeholder="توضیح مختصری دربارهٔ شرح حال بیمار خود بنویسید"
@@ -286,22 +225,15 @@ export function ContactForm({ prefill }: ContactFormProps) {
         </Field>
       </div>
 
-      {status === "failed" && (
-        <p role="alert" className="mt-5 flex items-start gap-2 rounded-xl bg-red-50 p-4 text-sm font-semibold text-red-800">
-          <CircleAlert className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          ارسال پیام با خطا مواجه شد. لطفاً دوباره تلاش کنید یا با مرکز تماس بگیرید.
-        </p>
-      )}
 
       <Button
         type="submit"
         variant="secondary"
         size="lg"
-        disabled={status === "submitting"}
-        leadingIcon={status === "submitting" ? LoaderCircle : Send}
+
         className="mt-6 w-full"
       >
-        {status === "submitting" ? "در حال بررسی..." : "ارسال پیام"}
+        ارسال پیام
       </Button>
     </form>
   );

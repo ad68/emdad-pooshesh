@@ -1,8 +1,8 @@
-import { PhoneCall } from "lucide-react";
+
 import { ALL_SERVICES } from "@/data/content";
-import { CONTACT } from "@/data/site";
-import { formatToman, telHref } from "@/lib/format";
-import { ButtonLink } from "@/components/website/ui/Button";
+
+import { formatToman } from "@/lib/format";
+
 import { Reveal } from "@/components/website/ui/Reveal";
 import { SectionHeading } from "@/components/website/ui/SectionHeading";
 
@@ -72,18 +72,7 @@ export function TariffTable() {
               ))}
             </ul>
 
-            <div className="flex flex-col gap-4 border-t border-slate-100 bg-paper px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
 
-              <ButtonLink
-                href={telHref(CONTACT.emergency.tel)}
-                variant="secondary"
-                size="sm"
-                leadingIcon={PhoneCall}
-                className="self-start sm:self-auto"
-              >
-                تماس برای استعلام
-              </ButtonLink>
-            </div>
           </div>
         </Reveal>
       </div>
