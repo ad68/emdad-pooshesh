@@ -173,6 +173,50 @@
     background-size: 40px 40px;
   }
 
+  .leaflet-container {
+    font-family: var(--font-sans);
+  }
+
+  .leaflet-control-zoom {
+    overflow: hidden;
+    border: 0 !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 4px 16px rgb(4 40 47 / 0.16) !important;
+  }
+
+  .leaflet-control-zoom a {
+    color: #04282f !important;
+  }
+
+  .azadi-map-marker {
+    border: 0;
+    background: transparent;
+  }
+
+  .azadi-map-marker span {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 5px solid white;
+    border-radius: 50% 50% 50% 0;
+    background: #f86534;
+    box-shadow: 0 3px 12px rgb(4 40 47 / 0.35);
+    transform: rotate(-45deg);
+  }
+
+  .azadi-map-tooltip {
+    border: 0 !important;
+    border-radius: 0.75rem !important;
+    background: #04282f !important;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgb(4 40 47 / 0.2) !important;
+  }
+
+  .azadi-map-tooltip::before {
+    border-top-color: #04282f !important;
+  }
+
   /* Hide scrollbar on horizontal snap carousels */
   .no-scrollbar {
     scrollbar-width: none;

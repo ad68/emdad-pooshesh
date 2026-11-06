@@ -70,7 +70,7 @@ export const CONTACT = {
     { label: "امور اداری و تعرفه", value: "شنبه تا چهارشنبه، ۰۸:۰۰ تا ۱۶:۰۰", placeholder: true },
   ],
 
-  /** Paste a Google Maps / Neshan embed URL here to replace the map placeholder. */
+  /** Set to a custom map embed URL to override the default themed map. */
   mapEmbedUrl: "",
 };
 

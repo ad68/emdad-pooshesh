@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import "leaflet/dist/leaflet.css";
 import "../index.css";
 
 const iranSans = localFont({
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "مرکز آمبولانس خصوصی امداد پوشش؛ انتقال ایمن بیمار، آمبولانس خصوصی، انتقال بین مراکز درمانی، بین‌شهری و اعزام به مراسم و رویدادها.",
   icons: {
-    icon: "/icon.svg",
+    icon: "/logo.svg",
   },
 };
 

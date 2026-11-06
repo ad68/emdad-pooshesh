@@ -83,12 +83,12 @@ const contactFormSchema = z.object({
     .string()
     .trim()
     .min(1, "لطفاً متن پیام خود را بنویسید.")
-    .min(5, "متن پیام باید دست‌کم 5 نویسه باشد."),
+    .min(5, "متن پیام باید دست‌کم 5 کاراکتر باشد."),
   address: z
     .string()
     .trim()
     .min(1, "لطفاً آدرس خود را بنویسید.")
-    .min(5, "متن آدرس باید دست‌کم 5 نویسه باشد."),
+    .min(5, "متن آدرس باید دست‌کم 5 کاراکتر باشد."),
 });
 
 type FormValues = z.input<typeof contactFormSchema>;
@@ -132,7 +132,7 @@ export function ContactForm() {
   const {
     register,
     handleSubmit,
-
+    reset,
     watch,
     formState: { errors },
   } = useForm<FormValues>({
@@ -146,7 +146,7 @@ export function ContactForm() {
   useEffect(() => {
     if (!notification) return;
 
-    const timeoutId = window.setTimeout(() => setNotification(null), 5000);
+    const timeoutId = window.setTimeout(() => setNotification(null), 10000);
     return () => window.clearTimeout(timeoutId);
   }, [notification]);
 
@@ -154,6 +154,7 @@ export function ContactForm() {
     setActionLoading(true);
     try {
       await axios.post("https://api.bakapp.ir/bakapp/api/ambulance-request/add", values);
+      reset(EMPTY_VALUES);
       setNotification("success");
     } catch {
       setNotification("error");
@@ -197,7 +198,7 @@ export function ContactForm() {
             </span>
             <span className="mt-1 block text-sm leading-6 text-slate-600">
               {notification === "success"
-                ? "همکاران ما در اولین فرصت با شما تماس می‌گیرند."
+                ? "کارشناسان ما ما در اسرع وقت با شما تماس می‌گیرند."
                 : "خطایی رخ داد. لطفاً دوباره تلاش کنید."}
             </span>
           </span>
