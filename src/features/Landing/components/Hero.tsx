@@ -82,6 +82,9 @@ export function Hero() {
           >
             <Image
               src={slide.image}
+              width={1920}
+              height={800}
+              loading="eager"
               alt={slide.alt}
               fetchPriority={i === 0 ? "high" : "auto"}
               draggable={false}
