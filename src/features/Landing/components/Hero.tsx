@@ -9,6 +9,7 @@ import { Container } from "@/components/website/ui/Container";
 import { PhoneNumber } from "@/components/website/ui/PhoneNumber";
 
 import { StripeAccent } from "@/components/website/ui/StripeAccent";
+import Image from "next/image";
 
 const AUTOPLAY_MS = 7000;
 const SWIPE_THRESHOLD = 50;
@@ -79,7 +80,7 @@ export function Hero() {
               i === index ? "opacity-100" : "opacity-0"
             )}
           >
-            <img
+            <Image
               src={slide.image}
               alt={slide.alt}
               fetchPriority={i === 0 ? "high" : "auto"}
