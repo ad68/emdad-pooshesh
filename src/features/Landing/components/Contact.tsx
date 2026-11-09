@@ -41,7 +41,7 @@ export function Contact() {
         <Reveal>
           <SectionHeading
             eyebrow="تماس با ما"
-            title="هر زمان نیاز داشتید، در کنار شما هستیم"
+            title="تماس با امداد پوشش"
             description="برای اعزام آمبولانس، دریافت تعرفه یا هر پرسش دیگری با ما در ارتباط باشید."
           />
         </Reveal>

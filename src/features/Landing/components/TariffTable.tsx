@@ -39,7 +39,7 @@ export function TariffTable() {
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <h4 className="text-xs lg:text-base font-extrabold text-brand-950">{title}</h4>
+                      <h3 className="text-xs lg:text-base font-extrabold text-brand-950">{title}</h3>
                       <p className="text-sm leading-7 text-slate-600">{tariffNote}</p>
                     </div>
                   </div>

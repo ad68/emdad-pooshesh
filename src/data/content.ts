@@ -14,16 +14,7 @@ import {
   DoorStairwell,
 } from "lucide-react";
 
-/* ------------------------------------------------------------------ */
-/*  All page content lives here so it is easy to replace.              */
-/*  Stock photos (Pexels) are SAMPLES — swap them for real photos.     */
-/* ------------------------------------------------------------------ */
 
-/** Builds a cropped Pexels image URL. Replace with your own image paths later. */
-export const pexels = (id: number, width: number, height: number) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${width}&h=${height}`;
-
-/* ------------------------------ Hero ------------------------------ */
 
 export interface HeroSlide {
   id: string;
@@ -40,7 +31,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     image: '/images/slider/slide-1.jpg',
     alt: "آمبولانس در مسیر شهری هنگام غروب",
     eyebrow: "آمبولانس خصوصی",
-    title: "همراه مطمئن شما در لحظه‌های حساس",
+    title: "آمبولانس خصوصی شبانه‌روزی در تهران | امداد پوشش",
     description:
       "با ناوگانی آماده و کادری مراقب، بیمار را ایمن و به‌موقع به مقصد می‌رسانیم؛ چون آرامش شما و عزیزانتان برای ما اولویت دارد.",
   },

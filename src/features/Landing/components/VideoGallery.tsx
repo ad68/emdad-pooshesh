@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import { Film, Play, TriangleAlert } from "lucide-react";
 import { VIDEOS, type VideoItem } from "@/data/content";
 import { Container } from "@/components/website/ui/Container";
@@ -81,9 +82,11 @@ function VideoPlayer({ video }: { video: VideoItem }) {
   const unavailable = failed;
   return (
     <div className="relative grid aspect-video w-full place-items-center overflow-hidden bg-brand-950">
-      <img
+      <Image
         src={video.thumbnail}
         alt=""
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="absolute inset-0 size-full scale-110 object-cover opacity-30 blur-md"
       />
       <div className="relative flex max-w-sm flex-col items-center gap-3 px-6 text-center text-white">

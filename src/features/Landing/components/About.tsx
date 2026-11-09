@@ -1,4 +1,5 @@
 import { ArrowLeft, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import { ABOUT_IMAGES, VALUES } from "@/data/content";
 import { BRAND } from "@/data/site";
 import { ButtonLink } from "@/components/website/ui/Button";
@@ -83,20 +84,22 @@ export function About() {
             />
 
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-2xl shadow-brand-950/25 ring-8 ring-white sm:aspect-[5/6]">
-              <img
+              <Image
                 src={ABOUT_IMAGES.main}
+                fill
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 576px"
                 alt="کارشناس امدادی در کنار آمبولانس"
-                loading="lazy"
                 className="size-full object-cover transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-linear-to-t from-brand-950/40 via-transparent to-transparent" />
             </div>
 
             <div className="absolute -bottom-0 -left-2 aspect-[5/4] w-[46%] overflow-hidden rounded-3xl border-[6px] border-white shadow-2xl shadow-brand-950/25 sm:-left-8">
-              <img
+              <Image
                 src={ABOUT_IMAGES.secondary}
+                fill
+                sizes="(max-width: 640px) 42vw, (max-width: 1024px) 24vw, 265px"
                 alt="مراقبت از بیمار در فضای داخلی آمبولانس"
-                loading="lazy"
                 className="size-full object-cover"
               />
             </div>

@@ -82,11 +82,10 @@ export function Hero() {
           >
             <Image
               src={slide.image}
-              width={1920}
-              height={800}
-              loading="eager"
+              width={2016}
+              height={1152}
+              preload={i === 0}
               alt={slide.alt}
-              fetchPriority={i === 0 ? "high" : "auto"}
               draggable={false}
               className={cn(
                 "size-full object-cover transition-transform duration-[9000ms] ease-out",

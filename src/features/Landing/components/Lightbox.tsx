@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import NextImage from "next/image";
 import { ChevronLeft, ChevronRight, ImageOff, LoaderCircle } from "lucide-react";
 import type { GalleryImage } from "@/data/content";
 import { toFaDigits } from "@/lib/format";
@@ -25,8 +26,10 @@ function LightboxImage({ image }: { image: GalleryImage }) {
           <span>تصویر در دسترس نیست</span>
         </div>
       ) : (
-        <img
+        <NextImage
           src={image.full}
+          width={1500}
+          height={1000}
           alt={image.caption}
           onLoad={() => setStatus("loaded")}
           onError={() => setStatus("error")}

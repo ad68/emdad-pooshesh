@@ -1,5 +1,7 @@
 import { Camera, type LucideIcon } from "lucide-react";
 
+export const SITE_URL = "https://emdadpoosheshemg.com";
+
 /* ------------------------------------------------------------------ */
 /*  Central, easy-to-edit company configuration.                       */
 /*  Replace every value marked "placeholder: true" with verified data. */
@@ -44,30 +46,30 @@ export const CONTACT = {
   /** Main emergency line — used by every "call" button on the site. */
   emergency: {
     label: "خط اورژانس و اعزام",
-    display: "09011157927 ",
-    tel: "09011157927 ",
+    display: "09011157927",
+    tel: "09011157927",
   } satisfies PhoneEntry,
 
   phones: [
-    { label: "خط اورژانس و اعزام", display: "09011157927", tel: "09011157927 " },
-    { label: "اورژانس", display: "021-88541848", tel: "021-88541848" },
+    { label: "خط اورژانس و اعزام", display: "09011157927", tel: "09011157927" },
+    { label: "خط ثابت", display: "021-88541848", tel: "02188541848" },
     /* { label: "پشتیبانی (همراه)", display: "0996-5550358", tel: "0996-5550358" }, */
 
   ] satisfies PhoneEntry[],
 
   address: {
-    value: "یوسف آباد - خیابان اسدآبادی - خیابان چهارم - پلاک 44- طبقه اول واحد 1",
-    placeholder: true,
+    value: "تهران، یوسف‌آباد، خیابان اسدآبادی، خیابان چهارم، پلاک ۴۴، طبقه اول، واحد ۱",
+    placeholder: false,
   },
 
   email: {
     value: "emdadpooshesh@gmail.com",
-    placeholder: true,
+    placeholder: false,
   },
 
   hours: [
-    { label: "اعزام آمبولانس", value: "همه روزه، شبانه‌روزی", placeholder: true },
-    { label: "امور اداری و تعرفه", value: "شنبه تا چهارشنبه، ۰۸:۰۰ تا ۱۶:۰۰", placeholder: true },
+    { label: "اعزام آمبولانس", value: "همه روزه، شبانه‌روزی", placeholder: false },
+    { label: "امور اداری و تعرفه", value: "شنبه تا چهارشنبه، ۰۸:۰۰ تا ۱۶:۰۰", placeholder: false },
   ],
 
   /** Set to a custom map embed URL to override the default themed map. */
@@ -84,7 +86,7 @@ export interface SocialLink {
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    id: "instagram", label: "اینستاگرام", icon: Camera, href: "Emdadpooshesh@gmail.com"
+    id: "instagram", label: "اینستاگرام", icon: Camera, href: ""
   },
   /*   { id: "telegram", label: "تلگرام", icon: Send, href: "" },
     { id: "whatsapp", label: "واتس‌اپ", icon: MessageCircle, href: "" },

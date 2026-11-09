@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import Image from "next/image";
 import { Award, Medal, ZoomIn } from "lucide-react";
 import { AWARDS, type AwardItem } from "@/data/content";
 import { toFaDigits } from "@/lib/format";
@@ -157,7 +158,13 @@ export function Awards() {
           <div className="overflow-hidden rounded-3xl bg-linear-to-b from-[#fdfaf3] to-[#efe7d6] p-4 shadow-2xl">
             <div className="relative mx-auto max-h-[68vh] aspect-[3/4] overflow-hidden rounded-xl border-[6px] border-double border-brand-600/40 bg-white">
               {current.image ? (
-                <img src={current.image} alt={current.title ?? "لوح تقدیر"} className="size-full object-contain p-2" />
+                <Image
+                  src={current.image}
+                  alt={current.title ?? "لوح تقدیر"}
+                  fill
+                  sizes="(max-width: 640px) 90vw, 576px"
+                  className="size-full object-contain p-2"
+                />
               ) : (
                 <CertificatePlaceholder large />
               )}

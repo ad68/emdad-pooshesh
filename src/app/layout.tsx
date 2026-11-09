@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { BRAND, SITE_URL } from "@/data/site";
+import { STRUCTURED_DATA } from "@/data/structured-data";
 import "leaflet/dist/leaflet.css";
 import "../index.css";
 
@@ -20,9 +22,52 @@ const iranSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "مرکز آمبولانس خصوصی امداد پوشش | انتقال ایمن بیمار",
+  metadataBase: new URL(SITE_URL),
+  title: "امداد پوشش | آمبولانس خصوصی شبانه‌روزی در تهران",
   description:
-    "مرکز آمبولانس خصوصی امداد پوشش؛ انتقال ایمن بیمار، آمبولانس خصوصی، انتقال بین مراکز درمانی، بین‌شهری و اعزام به مراسم و رویدادها.",
+    "مرکز آمبولانس خصوصی امداد پوشش، ارائه‌دهنده خدمات شبانه‌روزی اعزام آمبولانس و انتقال بیمار در تمام مناطق تهران. برای دریافت خدمات و هماهنگی انتقال بیمار با ما تماس بگیرید.",
+  applicationName: BRAND.fullName,
+  authors: [{ name: BRAND.fullName }],
+  creator: BRAND.fullName,
+  publisher: BRAND.fullName,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    url: SITE_URL,
+    siteName: BRAND.fullName,
+    title: "امداد پوشش | آمبولانس خصوصی شبانه‌روزی در تهران",
+    description:
+      "اعزام شبانه‌روزی آمبولانس و انتقال بیمار در تمام مناطق تهران. برای هماهنگی با مرکز آمبولانس خصوصی امداد پوشش تماس بگیرید.",
+    images: [
+      {
+        url: "/images/og-cover.jpg",
+        width: 1200,
+        height: 630,
+        alt: "آمبولانس مرکز امداد پوشش در تهران",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "امداد پوشش | آمبولانس خصوصی شبانه‌روزی در تهران",
+    description:
+      "اعزام شبانه‌روزی آمبولانس و انتقال بیمار در تمام مناطق تهران.",
+    images: ["/images/og-cover.jpg"],
+  },
   icons: {
     icon: "/logo.svg",
   },
@@ -34,8 +79,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${iranSans.variable}`} lang="fa" dir="rtl">
-      <body >{children}</body>
+    <html className={`${iranSans.variable}`} lang="fa-IR" dir="rtl">
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(STRUCTURED_DATA).replace(/</g, "\\u003c"),
+          }}
+        />
+      </body>
     </html>
   );
 }

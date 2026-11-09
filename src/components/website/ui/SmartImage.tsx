@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -7,7 +8,7 @@ interface SmartImageProps {
   alt: string;
   /** Classes for the wrapper (set the aspect ratio / size here). */
   className?: string;
-  /** Classes for the <img> itself (object-fit, hover effects ...). */
+  /** Classes for the image itself (object-fit, hover effects ...). */
   imgClassName?: string;
   eager?: boolean;
 }
@@ -28,11 +29,13 @@ export function SmartImage({ src, alt, className, imgClassName, eager = false }:
           </div>
         </div>
       ) : (
-        <img
+        <Image
           ref={(node) => {
             if (node?.complete && node.naturalWidth > 0) setStatus("loaded");
           }}
           src={src}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={alt}
           loading={eager ? "eager" : "lazy"}
           draggable={false}
