@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CONTACT } from "@/data/site";
 import { telHref, toEnDigits } from "@/lib/format";
-
+import { Turnstile } from '@marsidev/react-turnstile';
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/website/ui/Button";
 import axios from "axios";
@@ -139,6 +139,7 @@ export function ContactForm() {
     resolver: zodResolver(contactFormSchema),
     defaultValues: EMPTY_VALUES,
   });
+  const [token, setToken] = useState<string>('')
   const [actionLoading, setActionLoading] = useState(false)
   const [notification, setNotification] = useState<"success" | "error" | null>(null);
   const selectedSubject = watch("serviceType");
@@ -150,17 +151,26 @@ export function ContactForm() {
     return () => window.clearTimeout(timeoutId);
   }, [notification]);
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = (values: FormValues) => {
     setActionLoading(true);
-    try {
-      await axios.post("https://api.bakapp.ir/bakapp/api/ambulance-request/add", values);
-      reset(EMPTY_VALUES);
-      setNotification("success");
-    } catch {
-      setNotification("error");
-    } finally {
-      setActionLoading(false);
-    }
+    axios
+      .post("/api/verify-turnstile", { token })
+      .then(() => {
+        return axios.post(
+          "https://api.bakapp.ir/bakapp/api/ambulance-request/add",
+          values
+        );
+      })
+      .then(() => {
+        reset(EMPTY_VALUES);
+        setNotification("success");
+      })
+      .catch(() => {
+        setNotification("error");
+      })
+      .finally(() => {
+        setActionLoading(false);
+      });
   };
   const describedBy = (field: keyof FormValues) => (errors[field] ? `contact-${field}-error` : undefined);
 
@@ -325,13 +335,22 @@ export function ContactForm() {
           />
         </Field>
       </div>
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+        onSuccess={(token) => setToken(token)}
+        onError={() => alert('خطا در بارگذاری کپچا')}
+        onExpire={() => setToken('')}
+        options={{
+          theme: 'light',
+          language: 'fa',
+        }}
+      />
 
       <Button
         type="submit"
         variant="secondary"
-        disabled={actionLoading}
+        disabled={actionLoading || token?.length === 0}
         size="lg"
-
         className="mt-6 w-full"
       >
         {actionLoading ? "لطفا صبر کنید..." : "ارسال پیام"}
@@ -340,3 +359,74 @@ export function ContactForm() {
     </form>
   );
 }
+
+// components/ContactForm.tsx
+/* 'use client';
+
+import { useState } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
+
+export function ContactForm() {
+  const [token, setToken] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!token) {
+      alert('لطفاً تست امنیتی را کامل کنید.');
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email');
+
+   
+    const res = await fetch('/api/verify-turnstile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, email }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      setStatus('فرم با موفقیت ارسال شد!');
+    } else {
+      setStatus('اعتبارسنجی کپچا ناموفق بود.');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm">
+      <input
+        type="email"
+        name="email"
+        placeholder="ایمیل شما"
+        required
+        className="p-2 border rounded"
+      />
+
+      ویجت کپچای کلودفلر
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+        onSuccess={(token) => setToken(token)}
+        onError={() => alert('خطا در بارگذاری کپچا')}
+        onExpire={() => setToken('')}
+        options={{
+          theme: 'auto', 
+          language: 'fa', 
+        }}
+      />
+
+      <button
+        type="submit"
+        disabled={!token}
+        className="bg-blue-600 text-white p-2 rounded disabled:opacity-50"
+      >
+        ارسال فرم
+      </button>
+
+      {status && <p className="mt-2 text-sm">{status}</p>}
+    </form>
+  );
+} */
