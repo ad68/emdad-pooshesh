@@ -15,10 +15,10 @@ export async function POST(request: Request) {
         verifyFormData.append('response', token);
 
         // اختیاری: برای دقت بیشتر می‌توانید IP کاربر را هم بفرستید
-        const clientIp = request.headers.get('x-forwarded-for') || '';
-        if (clientIp) {
-            verifyFormData.append('remoteip', clientIp);
-        }
+        /*  const clientIp = request.headers.get('x-forwarded-for') || '';
+         if (clientIp) {
+             verifyFormData.append('remoteip', clientIp);
+         } */
 
         const verifyRes = await fetch(
             'https://challenges.cloudflare.com/turnstile/v0/siteverify',
