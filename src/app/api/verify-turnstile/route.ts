@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         verifyFormData.append('secret', process.env.CLOUDFLARE_SECRET_KEY!);
         verifyFormData.append('response', token);
 
-        // اختیاری: برای دقت بیشتر می‌توانید IP کاربر را هم بفرستید 
+        // اختیاری: برای دقت بیشتر می‌توانید IP کاربر را هم بفرستید   asdasdasd
         /*  const clientIp = request.headers.get('x-forwarded-for') || '';
          if (clientIp) {
              verifyFormData.append('remoteip', clientIp);
