@@ -338,7 +338,7 @@ export function ContactForm() {
       <Turnstile
         siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
         onSuccess={(token) => setToken(token)}
-        onError={() => alert('خطا در بارگذاری کپچا')}
+        onError={(err) => console.log('err', err)}
         onExpire={() => setToken('')}
         options={{
           theme: 'light',

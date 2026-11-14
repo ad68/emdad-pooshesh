@@ -29,11 +29,11 @@ export async function POST(request: Request) {
         );
 
         const outcome = await verifyRes.json();
-        console.log("Turnstile outcome:", outcome);
+
         if (!outcome.success) {
             return NextResponse.json(
-                { outcome: outcome },
-                { success: false, message: 'کپچا نامعتبر است', errors: outcome['error-codes'] },
+
+                { success: false, message: 'کپچا نامعتبر است', errors: outcome['error-codes'], outcome },
                 { status: 403 }
             );
         }
