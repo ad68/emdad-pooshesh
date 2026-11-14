@@ -150,6 +150,11 @@ export function ContactForm() {
     const timeoutId = window.setTimeout(() => setNotification(null), 10000);
     return () => window.clearTimeout(timeoutId);
   }, [notification]);
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY;
+
+    console.log("Cloudflare Site Key:", siteKey);
+  }, [])
 
   const onSubmit = (values: FormValues) => {
     setActionLoading(true);
